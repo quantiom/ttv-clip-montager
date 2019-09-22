@@ -1,0 +1,11 @@
+{
+    "directories": {
+        "clips": "./clips",
+        "output": "./output"
+    },
+    "resizing_resolutions": {
+        "width": 1920,
+        "height": 1080
+    },
+    "client_id": "your_client_id"
+}

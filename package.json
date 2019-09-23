@@ -18,6 +18,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-nextra": "^0.4.5",
     "get-video-dimensions": "^1.0.0",
+    "ms": "^2.1.2",
     "readline-promise": "^1.0.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",

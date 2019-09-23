@@ -47,8 +47,9 @@ const rlp = readline.createInterface({
         }
     }
 
+    const timeFrame = await rlp.questionAsync('Time frame to get the top clips from (ex: 1 week): ');
     const continueDownload = await rlp.questionAsync('[WARNING] Downloading the clips can take a large amount of space on your drive, continue? (F if you want to use the clips that are already downloaded) [Y, N, F]: ');
-    const clips = gameID ? await getClips(gameID, clipAmount) : await getUserClips(userID, clipAmount);
+    const clips = gameID ? await getClips(gameID, clipAmount, timeFrame) : await getUserClips(userID, clipAmount, timeFrame);
 
     if (continueDownload.toLowerCase() == 'y') {
         for (let i = 0; i < clips.data.length; i++) {

@@ -4,18 +4,20 @@ const ffmpeg = require('fluent-ffmpeg');
 const getFileFromUrl = require("@appgeist/get-file-from-url");
 const getDimensions = require('get-video-dimensions');
 const shelljs = require('shelljs');
+const ms = require('ms');
 
 module.exports = {
     /**
     * Retrieve a certain amount of top clips for a game on twitch.
     * @param {Integer} gameID The game id to get the clips from.
     * @param {Integer} amount Amount of clips to fetch. 
+    * @param {string} time Time frame
     * @returns {Promise<Object>}
     */
-    getClips: (gameID, amount = 30) => {
+    getClips: (gameID, amount = 30, time = '1 week') => {
         return new Promise(resolve => {
             rp({
-                uri: `https://api.twitch.tv/helix/clips?game_id=${gameID}&first=${amount}&started_at=${(new Date(Date.now() - (60 * 60 * 24 * 7 * 1000))).toISOString()}`,
+                uri: `https://api.twitch.tv/helix/clips?game_id=${gameID}&first=${amount}&started_at=${(new Date(Date.now() - ms(time))).toISOString()}&ended_at=${new Date().toISOString()}`,
                 method: 'GET',
                 headers: { 
                     'Client-ID': client_id
@@ -55,12 +57,13 @@ module.exports = {
     * Retrieve a certain amount of top clips for a user.
     * @param {Integer} userID The user id to get the clips from.
     * @param {Integer} amount Amount of clips to fetch. 
+    * @param {string} time Time frame
     * @returns {Promise<Object>}
     */
-    getUserClips: (userID, amount = 30) => {
+    getUserClips: (userID, amount = 30, time = '1 week') => {
         return new Promise(resolve => {
             rp({
-                uri: `https://api.twitch.tv/helix/clips?broadcaster_id=${userID}&first=${amount}&started_at=${(new Date(Date.now() - (60 * 60 * 24 * 7 * 1000))).toISOString()}`,
+                uri: `https://api.twitch.tv/helix/clips?broadcaster_id=${userID}&first=${amount}&started_at=${(new Date(Date.now() - ms(time))).toISOString()}&ended_at=${new Date().toISOString()}`,
                 method: 'GET',
                 headers: { 
                     'Client-ID': client_id

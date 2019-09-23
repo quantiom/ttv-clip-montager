@@ -52,6 +52,51 @@ module.exports = {
     },
 
     /**
+    * Retrieve a certain amount of top clips for a user.
+    * @param {Integer} userID The user id to get the clips from.
+    * @param {Integer} amount Amount of clips to fetch. 
+    * @returns {Promise<Object>}
+    */
+    getUserClips: (userID, amount = 30) => {
+        return new Promise(resolve => {
+            rp({
+                uri: `https://api.twitch.tv/helix/clips?broadcaster_id=${userID}&first=${amount}&started_at=${(new Date(Date.now() - (60 * 60 * 24 * 7 * 1000))).toISOString()}`,
+                method: 'GET',
+                headers: { 
+                    'Client-ID': client_id
+                }
+            }).then(res => {
+                resolve(JSON.parse(res));
+            }).catch((e) => {
+                console.log(`An error has occured in getUserClips: ${e}`);
+                resolve(false);
+            });
+        });
+    },
+
+    /**
+     * Get a user ID by username
+     * @param {string} name The username
+     * @returns {Promise<Integer>}
+     */
+    getUserID: (name) => {
+        return new Promise(resolve => {
+            rp({
+                uri: `https://api.twitch.tv/helix/users?login=${name}`,
+                method: 'GET',
+                headers: { 
+                    'Client-ID': client_id
+                }
+            }).then(res => {
+                resolve(JSON.parse(res).data[0].id);
+            }).catch((e) => {
+                console.log(`An error has occured in getUserID: ${e}`);
+                resolve(false);
+            });
+        });
+    },
+
+    /**
     * Downloads a clip to the clips directory.
     * @param {Object} clip The clip object returned by the twitch api
     * @returns {Promise<void>}

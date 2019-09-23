@@ -1,2 +1,5 @@
 node_modules/
 config.json
+*.mp4
+clips/
+output/

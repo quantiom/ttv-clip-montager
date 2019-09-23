@@ -4,7 +4,9 @@ const {
     resizeClip, 
     getGameID, 
     concatVideos, 
-    addTextToClip 
+    addTextToClip,
+    getUserClips,
+    getUserID
 } = require('./utils');
 const { directories } = require('./config.json');
 const readline = require('readline-promise').default;
@@ -18,8 +20,17 @@ const rlp = readline.createInterface({
 });
 
 (async () => {
-    const gameName = await rlp.questionAsync('Game name (must be exact): ');
-    const gameID = await getGameID(encodeURIComponent(gameName));
+    const userOrGame = await rlp.questionAsync('Get top clips by user, or game? [U, G]: ');
+
+    let userID, gameID;
+
+    if (userOrGame.toLowerCase() == 'g') {
+        const gameName = await rlp.questionAsync('Game name (must be exact): ');
+        gameID = await getGameID(encodeURIComponent(gameName));
+    } else {
+        const userName = await rlp.questionAsync('Username (must be exact): ');
+        userID = await getUserID(userName);
+    }
 
     const clipAmount = await rlp.questionAsync('Amount of clips to download/edit: ');
 
@@ -37,7 +48,7 @@ const rlp = readline.createInterface({
     }
 
     const continueDownload = await rlp.questionAsync('[WARNING] Downloading the clips can take a large amount of space on your drive, continue? (F if you want to use the clips that are already downloaded) [Y, N, F]: ');
-    const clips = await getClips(gameID, clipAmount);
+    const clips = gameID ? await getClips(gameID, clipAmount) : await getUserClips(userID, clipAmount);
 
     if (continueDownload.toLowerCase() == 'y') {
         for (let i = 0; i < clips.data.length; i++) {

@@ -1,5 +1,5 @@
 ## TTV-Clip-Montager
-Gets the top clips (last 7 days) of a game on Twitch, and puts it into a video with resizing, text, and more.
+Gets the top clips (by week, month, year, etc...) of a game/user on Twitch, and puts it into a montage with resizing, text, and more.
 Example video (from the current top 3 clips of CSGO): https://www.youtube.com/watch?v=EKqSMYg_sPY&feature=youtu.be 
 
 ## Requirements
